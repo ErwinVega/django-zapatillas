@@ -2,30 +2,12 @@
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 from .base import *
 from dotenv import load_dotenv
+import dj_database_url
 import os
 
 
 
 load_dotenv()
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "shop",
-#         "USER": "postgres",
-#         "PASSWORD": "admin",
-#         "HOST": "127.0.0.1",
-#         "PORT": "5432",
-#     }
-# }
-
 
 # print(f"DB_NAME: {os.getenv('DB_NAME')}")
 # print(f"DB_USER: {os.getenv('DB_USER')}")
@@ -33,18 +15,24 @@ load_dotenv()
 # print(f"DB_HOST: {os.getenv('DB_HOST')}")
 # print(f"DB_PORT: {os.getenv('DB_PORT')}")
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "neondb",
+#         "USER": "neondb_owner",
+#         "PASSWORD": "npg_6SKBtYpgIrE9",
+#         "HOST": "ep-flat-truth-a5hvoj5r-pooler.us-east-2.aws.neon.tech",
+#         "PORT": "5432",
+#         'OPTIONS': {
+#             'sslmode': 'require',
+#         },
+#     }
+# }
+
 
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME":os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
