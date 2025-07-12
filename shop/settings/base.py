@@ -26,6 +26,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*"]  # Allow all hosts for development; change in production
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-zapatillas-production.up.railway.app',  # Tu dominio de Railway
+    'https://*.railway.app',  # Para cualquier subdominio de Railway
+]
+
 
 # Application definition
 
