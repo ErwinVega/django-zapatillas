@@ -2,11 +2,11 @@
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 from .base import *
 from dotenv import load_dotenv
-# import os
+import os
 
 
 
-# load_dotenv()
+load_dotenv()
 
 # DATABASES = {
 #     'default': {
@@ -33,31 +33,18 @@ from dotenv import load_dotenv
 # print(f"DB_HOST: {os.getenv('DB_HOST')}")
 # print(f"DB_PORT: {os.getenv('DB_PORT')}")
 
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "neondb",
-        "USER": "neondb_owner",
-        "PASSWORD": "npg_6SKBtYpgIrE9",
-        "HOST": "ep-flat-truth-a5hvoj5r-pooler.us-east-2.aws.neon.tech",
-        "PORT": "5432",
+        "NAME":os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
         'OPTIONS': {
             'sslmode': 'require',
         },
     }
 }
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME":os.getenv("DB_NAME"),
-#         "USER": os.getenv("DB_USER"),
-#         "PASSWORD": os.getenv("DB_PASSWORD"),
-#         "HOST": os.getenv("DB_HOST"),
-#         "PORT": os.getenv("DB_PORT"),
-#         'OPTIONS': {
-#             'sslmode': 'require',
-#         },
-#     }
-# }
