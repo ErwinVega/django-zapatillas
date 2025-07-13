@@ -24,7 +24,7 @@ class ImageInline(admin.TabularInline):
 @admin.register(VariantProduct)
 class VariantProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'color',  'stock', 'price','size', 'image_preview')
-    search_fields = ('product__name', 'color','size')
+    search_fields = ('product__name', 'color','size',"id")
     list_filter = ('product__brand', 'color', 'size')
     list_per_page = 10
     ordering = ('id',)

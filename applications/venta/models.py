@@ -19,6 +19,7 @@ class Pedido(models.Model):
         return f"Pedido {self.id} - Cliente: {self.user} - Total: {self.total}"
     
     def calculate_total(self):
+        
         self.total = sum(detalle.producto.price * detalle.cantidad for detalle in self.detalles.all())
         self.save(update_fields=['total'])
         return self.total
