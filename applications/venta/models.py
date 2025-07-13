@@ -45,11 +45,11 @@ class DetallePedido(models.Model):
     
     def save(self,*args, **kwargs):
         
-        super().save(*args, **kwargs)
         self.pedido.calculate_total()
+        super().save(*args, **kwargs)
         
     def delete(self,*args, **kwargs):
-        super().delete(*args, **kwargs)
         self.pedido.calculate_total()
+        super().delete(*args, **kwargs)
         
     
