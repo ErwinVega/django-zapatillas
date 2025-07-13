@@ -5,6 +5,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 from applications.producto.models import VariantProduct
+from functools import reduce
 
 
 class Pedido(models.Model):
@@ -18,9 +19,21 @@ class Pedido(models.Model):
     def __str__(self):
         return f"Pedido {self.id} - Cliente: {self.user} - Total: {self.total}"
     
-    def calculate_total(self):
+    def calculate_total(self,save=True):
+        if  not self.detalles.exists():
+            self.save(update_fields=['total'])
+            self.total = 0.00
+            return self.total
         
-        self.total = sum(detalle.producto.price * detalle.cantidad for detalle in self.detalles.all())
+        if save:
+            # Calcular el total del pedido sumando los precios de los detalles
+            self.total = sum(detalle.producto.price * detalle.cantidad for detalle in self.detalles.all())
+            self.save(update_fields=['total'])
+            return self.total
+        self.total = reduce(
+                lambda acc, detalle: acc - detalle.producto.price * detalle.cantidad,
+                self.detalles.all(),
+                )
         self.save(update_fields=['total'])
         return self.total
 
@@ -50,7 +63,7 @@ class DetallePedido(models.Model):
         self.pedido.calculate_total()
         
     def delete(self,*args, **kwargs):
-        self.pedido.calculate_total()
         super().delete(*args, **kwargs)
+        self.pedido.calculate_total(save=False)
         
     
