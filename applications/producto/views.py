@@ -92,6 +92,17 @@ class DetailVariantProductiView(generics.RetrieveAPIView):
     queryset = VariantProduct.objects.all()
     serializer_class = VariantProductDetailSerializer
     
+    def retrieve(self, request, *args, **kwargs):
+        cache_key = f"variant_detail_{kwargs['pk']}"
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            print("traido desde cache")
+            return Response(cached_data)
+        response =super().retrieve(request, *args, **kwargs)
+        cache.set(cache_key,response.data, timeout=60*5)  # Cache for 2 minutes
+        print("traido desde postgresql")
+        return response
+    
     
 
 
