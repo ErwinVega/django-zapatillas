@@ -1,7 +1,9 @@
 # views.py
 import json
 import os
+import time
 from django.http import JsonResponse
+from django.core.cache import cache
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
@@ -9,6 +11,7 @@ from rest_framework import status
 
 
 from django_filters import rest_framework as filters
+
 
 from .serializer import (
     BrandSerializer,
@@ -69,9 +72,30 @@ class ProductVariantListView(generics.ListAPIView):
     pagination_class=PaginatorSerializer
     
     
+    
+    def list(self, request, *args, **kwargs):
+        response =super().list(request, *args, **kwargs)
+        query_params=request.query_params.dict()
+        cache_key = f"product_variant_list_{hash(frozenset(query_params.items()))}"
+        
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            time.sleep(4)
+            print("Productos traidos desde redis ")    
+            print("Cache hit for:", cache_key)
+            return Response(cached_data)
+       
+        print("traido desde postgresql")
+        cache.set(cache_key, response.data, timeout=60*5)  # Cache for 2 minutes
+        return response
+        
+    
+    
 class DetailVariantProductiView(generics.RetrieveAPIView):
     queryset = VariantProduct.objects.all()
     serializer_class = VariantProductDetailSerializer
+    
+    
 
 
 

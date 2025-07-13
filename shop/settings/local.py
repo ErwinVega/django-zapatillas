@@ -36,3 +36,28 @@ DATABASES = {
         default=os.environ.get('DATABASE_URL')
     )
 }
+
+# FIXME: CACHES SETTINS
+print("REDIS_PUBLIC_URL:", os.environ.get('REDIS_PUBLIC_URL'))
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get('REDIS_PUBLIC_URL'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 100,
+                "retry_on_timeout": True,  
+            },
+            "SERIALIZER_CLASS": "django_redis.serializers.msgpack.MSGPackSerializer",
+            "COMPRESSOR_CLASS": "django_redis.compressors.zlib.ZlibCompressor",
+
+            
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+            
