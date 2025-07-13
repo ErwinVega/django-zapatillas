@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.cache import cache
 from .choices import SisesChoices
 
 
@@ -39,6 +40,18 @@ class VariantProduct(models.Model):
     is_new = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
+    
+    
+    def save(self, *args, **kwargs):
+        # Limpiar la caché para el detalle del producto variante
+        cache_key_detail = f"variant_detail_{self.id}"
+        cache.delete(cache_key_detail)
+        
+        # Limpiar la caché para la lista de variantes de producto
+        cache.delete_pattern("product_variant_list_*",)
+        
+        return super().save(*args, **kwargs)
+    
     
 
     def __str__(self):

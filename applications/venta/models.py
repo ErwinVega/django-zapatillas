@@ -9,8 +9,8 @@ from applications.producto.models import VariantProduct
 
 class Pedido(models.Model):
     id= models.UUIDField(primary_key=True, editable=False,default=uuid.uuid4)
-    fecha = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     
     total = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pedidos')

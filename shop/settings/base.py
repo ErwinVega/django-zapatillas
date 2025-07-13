@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure--wt58m@_!^rundq&ic7+tjxzuvs*#h8j54dhrux*w*6kp%6!dw
 
 # SECURITY WARNING: don't run with debug turned on in production!
 print("DEBUG:", os.getenv('DEBUG'))
-DEBUG =False
+DEBUG =True
 
 ALLOWED_HOSTS = ["*"]  # Allow all hosts for development; change in production
 
@@ -141,6 +141,14 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '200/day',
+        'user': '2000/day'
+    }
 }
 
 
