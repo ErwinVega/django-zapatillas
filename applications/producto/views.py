@@ -80,9 +80,6 @@ class ProductVariantListView(generics.ListAPIView):
         
         cached_data = cache.get(cache_key)
         if cached_data:
-            time.sleep(4)
-            print("Productos traidos desde redis ")    
-            print("Cache hit for:", cache_key)
             return Response(cached_data)
        
         print("traido desde postgresql")
