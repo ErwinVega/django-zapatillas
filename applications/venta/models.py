@@ -46,8 +46,8 @@ class DetallePedido(models.Model):
     
     def save(self,*args, **kwargs):
         
-        self.pedido.calculate_total()
         super().save(*args, **kwargs)
+        self.pedido.calculate_total()
         
     def delete(self,*args, **kwargs):
         self.pedido.calculate_total()
