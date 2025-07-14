@@ -11,9 +11,7 @@ class LoginSerializer(serializers.Serializer):
     password= serializers.CharField()
     
     def validate(self, attrs):
-        
-        
-        user = authenticate(username=attrs["username"],password="password")
+        user = authenticate(username=attrs["username"],password=attrs["password"])
         if not user:
             raise serializers.ValidationError("credenciales no validas")
         attrs["user"]= user
