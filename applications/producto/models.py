@@ -41,6 +41,7 @@ class VariantProduct(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
     
+  
     
     def save(self, *args, **kwargs):
         # Limpiar la caché para el detalle del producto variante

@@ -52,11 +52,13 @@ THIRD_PARTY_APPS = [
     
     "rest_framework",
     "django_filters",
+    'rest_framework_simplejwt',
 ]
 MY_APPS= [
     
     'applications.producto',
     'applications.venta',
+    'applications.user',
     
 ]
 
@@ -146,8 +148,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '200/day',
-        'user': '2000/day'
+        'anon': '500000/day',
+        'user': '50000/day'
     }
 }
 

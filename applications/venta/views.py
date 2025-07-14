@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+from rest_framework import generics
+
+from .models import (
+    DetallePedido,
+    Pedido
+)
+from .serializers import (
+    PedidoSerializer
+)
+
+
+class CreatePedidoApiList(generics.CreateAPIView):
+    queryset=Pedido.objects.all()
+    serializer_class= PedidoSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
