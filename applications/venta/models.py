@@ -19,23 +19,16 @@ class Pedido(models.Model):
     def __str__(self):
         return f"Pedido {self.id} - Cliente: {self.user} - Total: {self.total}"
     
-    def calculate_total(self,save=True):
+    def calculate_total(self):
         if  not self.detalles.exists():
-            self.save(update_fields=['total'])
             self.total = 0.00
+            self.save(update_fields=['total'])
             return self.total
         
-        if save:
-            # Calcular el total del pedido sumando los precios de los detalles
-            self.total = sum(detalle.producto.price * detalle.cantidad for detalle in self.detalles.all())
-            self.save(update_fields=['total'])
-            return self.total
-        self.total = reduce(
-                lambda acc, detalle: acc - detalle.producto.price * detalle.cantidad,
-                self.detalles.all(),
-                )
+        self.total = sum(detalle.producto.price * detalle.cantidad for detalle in self.detalles.all())
         self.save(update_fields=['total'])
         return self.total
+
 
 
 class DetallePedido(models.Model):
@@ -57,13 +50,12 @@ class DetallePedido(models.Model):
         return f"Detalle {self.id} - Pedido: {self.pedido.id} - Producto: {self.producto} - Cantidad: {self.cantidad}"
     
     
-    def save(self,*args, **kwargs):
-        
+    def save(self,*args, **kwargs):      
         super().save(*args, **kwargs)
         self.pedido.calculate_total()
         
     def delete(self,*args, **kwargs):
         super().delete(*args, **kwargs)
-        self.pedido.calculate_total(save=False)
+        self.pedido.calculate_total()
         
     
