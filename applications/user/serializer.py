@@ -16,6 +16,7 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(username=attrs["username"],password="password")
         if not user:
             raise serializers.ValidationError("credenciales no validas")
+        attrs["user"]= user
         return attrs
     
     

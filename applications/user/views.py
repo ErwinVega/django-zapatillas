@@ -20,7 +20,8 @@ class CreateTokenUser(APIView):
     def post(self,*args, **kwargs):
         serializer = LoginSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        user:User= serializer.validated_data()
+        user:User= serializer.validated_data["user"]
+        print(user)
         refresh = RefreshToken.for_user(user)
         return Response({
                 "refresh":str(refresh),
