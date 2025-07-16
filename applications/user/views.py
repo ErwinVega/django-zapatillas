@@ -22,7 +22,7 @@ class CreateTokenUser(APIView):
         serializer.is_valid(raise_exception=True)
         user:User= serializer.validated_data["user"]
         print(
-            "Este es el user"
+             "Este es el user"
         )
         refresh = RefreshToken.for_user(user)
         return Response({

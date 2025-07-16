@@ -60,6 +60,7 @@ MY_APPS= [
     'applications.producto',
     'applications.venta',
     'applications.user',
+    'applications.carrito'
     
 ]
 
